@@ -1,0 +1,19 @@
+#!/bin/bash
+echo ">> Pre-push Hook: Checking branch name...\n"
+
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+PROTECTED_BRANCHES="^(main|dev)"
+
+exit_with_error() {
+  echo "🚫 $1\n" >&2
+  exit 1
+}
+
+if [[ "$BRANCH_NAME" =~ $PROTECTED_BRANCHES ]]
+then
+  exit_with_error "Cannot push to remote $BRANCH_NAME branch, please create your own branch and use PR."
+fi
+
+echo ">> Pre-push Hook completed successfully.\n"
+
+exit 0

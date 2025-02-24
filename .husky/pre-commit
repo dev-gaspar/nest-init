@@ -1,0 +1,39 @@
+#!/bin/bash
+echo ">> Pre-commit Hook: Validating branch name...\n"
+
+# Get the current branch name
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+PROTECTED_BRANCHES="^(main|dev)"
+
+# Exit with an error message
+exit_with_error() {
+  echo "🚫 $1\n" >&2
+  exit 1
+}
+
+# Rule: Prevent commits directly to main or dev branches
+if [[ $BRANCH_NAME =~ $PROTECTED_BRANCHES ]]; then
+  exit_with_error "Commits directly to the '$BRANCH_NAME' branch are not allowed! Please create a feature branch and use a pull request."
+fi
+
+echo ">> Branch name validation passed.\n"
+
+# Run linting tools
+echo ">> Running lint-staged...\n"
+if ! lint-staged; then
+  exit_with_error "Lint-staged failed. Please fix the issues and try again."
+fi
+
+echo "\n>> Running npm lint..\n"
+if ! npm run lint; then
+  exit_with_error "Linting failed. Please fix the issues and try again."
+fi
+
+echo "\n>> Running npm format..\n"
+if ! npm run format; then
+  exit_with_error "Formatting failed. Please fix the issues and try again."
+fi
+
+echo ">> Pre-commit Hook completed successfully.\n"
+
+exit 0
