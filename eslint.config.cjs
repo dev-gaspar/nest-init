@@ -1,12 +1,12 @@
-import { defineConfig } from 'eslint/config';
-import tsParser from '@typescript-eslint/parser';
-import eslintJs from '@eslint/js';
-import eslintTs from 'typescript-eslint';
-import globals from 'globals';
+const { defineConfig } = require('eslint/config');
+const tsParser = require('@typescript-eslint/parser');
+const eslintJs = require('@eslint/js');
+const eslintTs = require('typescript-eslint');
+const globals = require('globals');
 
 const tsFiles = ['**/*.ts'];
 
-export default defineConfig([
+module.exports = defineConfig([
   { ignores: ['.eslintrc.js'] },
   eslintJs.configs.recommended,
   ...eslintTs.configs.recommended.map((config) => ({
