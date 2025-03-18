@@ -1,7 +1,7 @@
 import { LoggerModule } from 'nestjs-pino';
 import { IncomingMessage, ServerResponse } from 'http';
 
-type LoggerConfig = {
+interface LoggerConfig {
   pinoHttp: {
     level?: string;
     transport?: {
@@ -23,7 +23,7 @@ type LoggerConfig = {
       };
     };
   };
-};
+}
 
 const loggerConfig: LoggerConfig = {
   pinoHttp: {
