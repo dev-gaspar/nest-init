@@ -3,7 +3,7 @@ import { Role } from '@prisma/client';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 
-export function Auth(roles: Role[] = [Role.USER]) {
+export function Auth(roles: Role[] = [Role.USER, Role.ADMIN, Role.OWNER]) {
   return applyDecorators(
     SetMetadata('roles', roles),
     UseGuards(JwtAuthGuard, RolesGuard),
